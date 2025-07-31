@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Stock Express</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="home-container">
+    <h1 class="title">📈 Stock Express</h1>
+    <p class="subtitle">Your smart stock portfolio manager</p>
+
+    <div class="form-card">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="text" placeholder="Username" name="username" required />
+        <input type="password" placeholder="Password" name="password" required />
+        <div class="form-footer">
+          <a href="#">Forgot password?</a>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <footer>
+      <p>© 2025 Stock Express. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      window.location.href = "index.html";
+    });
+
+    window.onload = () => {
+      document.querySelector('.title').classList.add('show');
+      document.querySelector('.subtitle').classList.add('fade-in');
+    };
+  </script>
+</body>
+</html>
