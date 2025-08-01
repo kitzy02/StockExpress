@@ -6,6 +6,9 @@
   <title>Stock Express - Home</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
   <nav class="navbar">
@@ -20,6 +23,13 @@
     </div>
   </nav>
 
+  <canvas id="gainChart" style="width: 100%; max-width: 900px; margin: 50px auto; display: block;"></canvas>
+
+  <!-- buy_price and current_price Graph -->
+  <div style="width: 80%; margin: 50px auto;">
+    <canvas id="priceChart"></canvas>
+  </div>
+  
   <div class="home-container">
     <header>
       <h1 class="title">📈 Stock Express</h1>
@@ -45,5 +55,158 @@
     <p>© 2025 Stock Express. All rights reserved.</p>
     <p><strong>Disclaimer:</strong> Investments in the stock market are subject to market risks. Read all terms and conditions carefully before investing. Stock Express is not liable for any losses incurred.</p>
   </footer>
+
+  <!-- buy_price and current_price : js for graph
+
+  <script>
+    const companyNames = [
+      "Zomato", "TCS", "Infosys", "Reliance", "HDFC Bank", "Wipro",
+      "ICICI Bank", "Bajaj Finance", "Maruti Suzuki", "Larsen & Toubro", "Hindustan Unilever"
+    ];
+  
+    const buyPrices = [
+      155, 3840, 1450, 2650, 1580, 425, 980, 7200, 10800, 3100, 2450
+    ];
+  
+    const currentPrices = [
+      165, 3100, 1250, 2850, 1700, 470, 1050, 7800, 11200, 3300, 2650
+    ];
+  
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const priceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: companyNames,
+        datasets: [
+          {
+            label: 'Buy Price',
+            data: buyPrices,
+            borderColor: '#504B38',
+            backgroundColor: 'rgba(80, 75, 56, 0.2)',
+            tension: 0.4
+          },
+          {
+            label: 'Current Price',
+            data: currentPrices,
+            borderColor: '#B9B28A',
+            backgroundColor: 'rgba(185, 178, 138, 0.2)',
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Buy Price vs Current Price by Company',
+            font: {
+              size: 20
+            }
+          },
+          legend: {
+            position: 'bottom'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'Price (₹)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Company Name'
+            }
+          }
+        }
+      }
+    });
+  </script> -->
+
+ 
+<script>
+  const ctx = document.getElementById('gainChart').getContext('2d');
+
+  const gainChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Realised Gains',
+          data: [],
+          backgroundColor: '#7BAFDE'
+        },
+        {
+          label: 'Unrealised Gains',
+          data: [],
+          backgroundColor: '#FFD166'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Realised vs Unrealised Gains by Company',
+          font: {
+            size: 20
+          }
+        },
+        legend: {
+          position: 'bottom'
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Company'
+          }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Amount (₹)'
+          }
+        }
+      }
+    }
+  });
+
+  async function fetchChartData() {
+    try {
+      const res = await fetch('/api/gain-data');
+      const data = await res.json();
+
+      const labels = data.map(d => d.company_name);
+      const realised = data.map(d => d.realised_price);
+      const unrealised = data.map(d => d.unrealised_gain);
+
+      gainChart.data.labels = labels;
+      gainChart.data.datasets[0].data = realised;
+      gainChart.data.datasets[1].data = unrealised;
+      gainChart.update();
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+    }
+  }
+
+  // Fetch initially
+  fetchChartData();
+
+  // Update every 10 seconds
+  setInterval(fetchChartData, 10000);
+</script>
+
+  
 </body>
 </html>
