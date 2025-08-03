@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stocks | StockExpress</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
+
+  <!-- Header Navbar -->
+  <header class="bg-gray-900 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="text-2xl font-bold text-cyan-400">StockExpress</div>
+      <nav class="space-x-6 text-gray-300 font-medium text-sm">
+        <a href="holdings.html" class="hover:text-cyan-400 transition">Home</a>
+        <a href="#" class="hover:text-cyan-400 transition">Stocks</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <main class="flex-1 px-6 py-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-cyan-300">📊 Stocks</h1>
+        <p id="lastUpdated" class="text-sm text-gray-400 mt-1">Loading...</p>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <table class="min-w-full table-auto text-sm text-left">
+          <thead class="bg-gray-800 text-cyan-300 uppercase text-xs font-semibold">
+            <tr>
+              <th class="px-6 py-4">Sl. No</th>
+              <th class="px-6 py-4">Company</th>
+              <th class="px-6 py-4">Price</th>
+              <th class="px-6 py-4">52W High</th>
+              <th class="px-6 py-4">52W Low</th>
+              <th class="px-6 py-4">Action</th>
+            </tr>
+          </thead>
+          <tbody id="stocksTableBody" class="divide-y divide-gray-800">
+            <!-- Rows will be injected -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50" id="buyModal">
+    <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-lg">
+      <h3 id="modalCompany" class="text-xl font-semibold text-cyan-300 mb-2">Company</h3>
+      <p class="mb-4 text-gray-400">Price: ₹<span id="modalPrice">0</span></p>
+      <input id="quantity" type="number" min="1" placeholder="Enter quantity"
+             class="w-full mb-4 p-2 rounded-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring focus:ring-cyan-500" />
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeModal()"
+                class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-sm text-white">Cancel</button>
+        <button onclick="buyStock()"
+                class="px-4 py-2 rounded-md bg-cyan-500 hover:bg-cyan-600 text-sm font-semibold text-gray-900">Buy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="buyToast" class="fixed bottom-6 right-6 bg-gray-800 text-cyan-300 px-4 py-2 rounded-md shadow-lg hidden">
+    Purchase confirmed
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-500 text-sm py-4 text-center border-t border-gray-800">
+    &copy; 2025 StockExpress • Auto-refresh every 1 minute
+  </footer>
+
+  <script>
+    let currentStock = {};
+
+    async function fetchStocks() {
+      try {
+        const res = await fetch('http://localhost:5000/stocks/');
+        const data = await res.json();
+        const tbody = document.getElementById('stocksTableBody');
+        tbody.innerHTML = '';
+
+        data.forEach(stock => {
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-gray-800 transition-colors duration-200';
+
+          row.innerHTML = `
+            <td class="px-6 py-4">${stock.sl_no}</td>
+            <td class="px-6 py-4 text-cyan-200 font-medium">${stock.company_name}</td>
+            <td class="px-6 py-4">₹${stock.price}</td>
+            <td class="px-6 py-4">₹${stock.week_52_high}</td>
+            <td class="px-6 py-4">₹${stock.week_52_low}</td>
+            <td class="px-6 py-4">
+              <button class="px-4 py-1 text-sm font-semibold rounded-md bg-cyan-500 hover:bg-cyan-600 text-gray-900"
+                      onclick='openModal(${JSON.stringify(stock)})'>Buy</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        document.getElementById('lastUpdated').innerText =
+          `Last updated: ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        document.getElementById('lastUpdated').innerText = 'Failed to load data.';
+        console.error('Error:', err);
+      }
+    }
+
+    function openModal(stock) {
+      currentStock = stock;
+      document.getElementById('modalCompany').innerText = stock.company_name;
+      document.getElementById('modalPrice').innerText = stock.price;
+      document.getElementById('quantity').value = '';
+      document.getElementById('buyModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('buyModal').classList.add('hidden');
+    }
+
+    function buyStock() {
+      const qty = parseInt(document.getElementById('quantity').value);
+      if (!qty || qty <= 0) {
+        alert('Enter a valid quantity');
+        return;
+      }
+      closeModal();
+      const toast = document.getElementById('buyToast');
+      toast.innerText = `✔ Bought ${qty} shares of ${currentStock.company_name} at ₹${currentStock.price}`;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+
+    window.onload = () => {
+      fetchStocks();
+      setInterval(fetchStocks, 60000);
+    };
+  </script>
+</body>
+</html>
