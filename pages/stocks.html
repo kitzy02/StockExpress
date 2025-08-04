@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invest - Stock Express</title>
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logo-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .section-card {
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .btn-dashboard {
+      background:  #504B38;
+      color: #F8F3D9;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(80, 75, 56, 0.2);
+    }
+
+    .btn-dashboard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px rgba(80, 75, 56, 0.3);
+    }
+
+    .btn-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-dashboard:hover::before {
+      left: 100%;
+    }
+
+    .navbar-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(185, 178, 138, 0.95);
+    }
+  </style>
+</head>
+
+<body class="bg-[#F8F3D9] text-[#504B38] min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar-blur py-4 px-6 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <!-- Custom Logo SVG -->
+        <svg class="w-8 h-8 logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#504B38"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+          <path d="M26 12V16M30 12V16" stroke="#F8F3D9" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
+      </div>
+      <ul class="flex gap-8 font-semibold text-[#504B38]">
+        <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
+          Home
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="holdings.html" class="hover:text-[#333024] transition-colors duration-300">Holdings</a></li>
+        <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Main Dashboard Section -->
+  <main class="flex-1 px-6 py-6">
+    <div class="text-center mb-8 slide-up">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#333024] mb-4 leading-tight flex items-center justify-center gap-3">
+          <svg class="w-12 h-12 text-[#504B38] float-animation" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="currentColor"/>
+            <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+            <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+            <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+            <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+            <path d="M26 12V16M30 12V16" stroke="#F8F3D9" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span class="text-[#504B38]">Stocks Dashboard</span>
+        </h1>
+      
+        <p id="lastUpdated" class="text-sm text-[#5e5a48] font-medium flex items-center justify-center gap-2">
+          <span id="refreshIcon" class="animate-spin hidden text-[#B9B28A]">⟳</span>
+          <span>Loading stock data...</span>
+        </p>
+      </div>
+      
+
+      <div class="section-card overflow-x-auto">
+        <table class="min-w-full text-sm text-left border-separate border-spacing-y-2">
+          <thead>
+            <tr class="text-[#504B38] text-xs font-semibold uppercase">
+              <th class="px-6 py-3 bg-[#EDE6C4] rounded-l-xl">Sl. No</th>
+              <th class="px-6 py-3 bg-[#EDE6C4]">Company</th>
+              <th class="px-6 py-3 bg-[#EDE6C4]">Price</th>
+              <th class="px-6 py-3 bg-[#EDE6C4]">52W High</th>
+              <th class="px-6 py-3 bg-[#EDE6C4]">52W Low</th>
+              <th class="px-6 py-3 bg-[#EDE6C4] rounded-r-xl text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="stocksTableBody">
+            <!-- JavaScript inserts rows here -->
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50" id="buyModal">
+    <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-lg">
+      <h3 id="modalCompany" class="text-xl font-semibold text-cyan-300 mb-2">Company</h3>
+      <p class="mb-4 text-gray-400">Price: ₹<span id="modalPrice">0</span></p>
+      <input id="quantity" type="number" min="1" placeholder="Enter quantity"
+             class="w-full mb-4 p-2 rounded-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring focus:ring-cyan-500" />
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeModal()"
+                class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-sm text-white">Cancel</button>
+        <button onclick="buyStock()"
+                class="px-4 py-2 rounded-md bg-cyan-500 hover:bg-cyan-600 text-sm font-semibold text-gray-900">Buy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="buyToast" class="fixed bottom-6 right-6 bg-gray-800 text-cyan-300 px-4 py-2 rounded-md shadow-lg hidden">
+    Purchase confirmed
+  </div>
+  <!-- Footer -->
+  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
+      </div>
+      <div class="flex space-x-6 text-sm text-[#B9B28A]">
+        Auto-refresh every 1 minute
+      </div>
+    </div>
+  </footer>
+  <script>
+    let currentStock = {};
+
+    async function fetchStocks() {
+      try {
+        document.getElementById('refreshIcon').classList.remove('hidden');
+        const res = await fetch('http://localhost:5000/stocks/');
+        const data = await res.json();
+        const tbody = document.getElementById('stocksTableBody');
+        tbody.innerHTML = '';
+
+        data.forEach(stock => {
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-gray-800 hover:shadow-md transition-colors duration-200';
+
+          row.innerHTML = `
+            <td class="px-6 py-4">${stock.sl_no}</td>
+            <td class="px-6 py-4 text-cyan-200 font-medium truncate max-w-[160px]" title="${stock.company_name}">${stock.company_name}</td>
+            <td class="px-6 py-4">₹${stock.price}</td>
+            <td class="px-6 py-4">₹${stock.week_52_high}</td>
+            <td class="px-6 py-4">₹${stock.week_52_low}</td>
+            <td class="px-6 py-4 text-center">
+              <button class="px-4 py-1 text-sm font-semibold rounded-md bg-cyan-500 hover:bg-cyan-600 text-gray-900 focus:outline-none focus:ring focus:ring-cyan-400"
+                      onclick='openModal(${JSON.stringify(stock)})'>Buy</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        document.getElementById('lastUpdated').innerHTML =
+          `<span id="refreshIcon" class="hidden">🔄</span> Last updated: ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        document.getElementById('lastUpdated').innerHTML = `
+        <span class="inline-flex items-center gap-2 text-sm bg-[#FDF5DA] text-[#8B7E4B] px-4 py-2 rounded-lg shadow-sm border border-[#D6C89B]">
+          ⚠️ <strong>Failed to load data.</strong> Please check your connection.
+        </span>
+      `;
+        console.error('Error:', err);
+      } finally {
+        document.getElementById('refreshIcon').classList.add('hidden');
+      }
+    }
+
+    function openModal(stock) {
+      currentStock = stock;
+      document.getElementById('modalCompany').innerText = stock.company_name;
+      document.getElementById('modalPrice').innerText = stock.price;
+      document.getElementById('quantity').value = '';
+      document.getElementById('buyModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('buyModal').classList.add('hidden');
+    }
+
+    function buyStock() {
+      const qty = parseInt(document.getElementById('quantity').value);
+      if (!qty || qty <= 0) {
+        alert('Enter a valid quantity');
+        return;
+      }
+      closeModal();
+      const toast = document.getElementById('buyToast');
+      toast.innerText = `✔ Bought ${qty} shares of ${currentStock.company_name} at ₹${currentStock.price}`;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+
+    window.onload = () => {
+      fetchStocks();
+      setInterval(fetchStocks, 60000);
+    };
+  </script>
+</body>
+</html>

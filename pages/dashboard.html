@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard - Stock Express</title>
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logo-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .section-card {
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .btn-dashboard {
+      background:  #504B38;
+      color: #F8F3D9;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(80, 75, 56, 0.2);
+    }
+
+    .btn-dashboard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px rgba(80, 75, 56, 0.3);
+    }
+
+    .btn-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-dashboard:hover::before {
+      left: 100%;
+    }
+
+    .navbar-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(185, 178, 138, 0.95);
+    }
+  </style>
+</head>
+
+<body class="bg-[#F8F3D9] text-[#504B38] min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="navbar-blur py-4 px-6 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <!-- Custom Logo SVG -->
+        <svg class="w-8 h-8 logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#504B38"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+          <path d="M26 12V16M30 12V16" stroke="#F8F3D9" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
+      </div>
+      <ul class="flex gap-8 font-semibold text-[#504B38]">
+        <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
+          Home
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+
+        <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Main Dashboard Section -->
+  <main class="flex-grow flex justify-center items-center px-6 py-16">
+    <div class="w-full text-center mb-12">
+        <h2 class="text-4xl font-bold text-[#504B38] slide-up">What's on your mood today?</h2>
+        <p class="text-[#5e5a48] text-lg mt-2">Choose where to dive in—make a move or review your assets</p>
+      </div>
+      
+    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Invest Section -->
+      <div class="section-card">
+        <div class="flex items-center gap-4 mb-4">
+          <svg class="w-10 h-10 text-[#504B38]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 8 4-16 3 8h4" />
+          </svg>
+          <h2 class="text-2xl font-bold text-[#333024]">Invest</h2>
+        </div>
+        <p class="text-[#5e5a48] mb-6">
+          Explore top-performing stocks, trending sectors, and personalized investment opportunities.
+          Monitor real-time charts, company stats, and market news—all in one place.
+        </p>
+        <a href="stocks.html" class="btn-dashboard inline-block">Start Investing</a>
+      </div>
+
+      <!-- Holdings Section -->
+      <div class="section-card">
+        <div class="flex items-center gap-4 mb-4">
+          <svg class="w-10 h-10 text-[#504B38]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17l6-6 4 4 8-8M5 19h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <h2 class="text-2xl font-bold text-[#333024]">Holdings</h2>
+        </div>
+        <p class="text-[#5e5a48] mb-6">
+          Track your portfolio, view profit/loss summaries, and analyze asset performance. Access real-time financial snapshots, uncover insights through intuitive charts.
+        </p>
+        <a href="holdings.html" class="btn-dashboard inline-block">View Holdings</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
+      </div>
+      <div class="flex space-x-6 text-sm text-[#B9B28A]">
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

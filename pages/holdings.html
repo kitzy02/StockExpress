@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/favicon.ico">
+  <title>Holdings - Stock Express</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .section-card {
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
+    }
+    .navbar-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(185, 178, 138, 0.95);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F3D9] text-[#504B38] min-h-screen flex flex-col">
+  <nav class="navbar-blur py-4 px-6 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#504B38"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
+      </div>
+      <ul class="flex gap-8 font-semibold text-[#504B38]">
+        <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
+          Home
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="stocks.html" class="hover:text-[#333024] transition-colors duration-300">Stocks</a></li>
+        <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="flex-1 px-6 py-6 space-y-10">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center space-x-4 bg-[#EDE6C4] border border-[#D6C89B] rounded-xl p-4 shadow">
+        <div class="w-12 h-12 rounded-full bg-[#504B38] flex items-center justify-center text-xl font-bold text-[#F8F3D9]">A</div>
+        <div>
+          <div class="text-lg font-semibold text-[#333024]">Abhishek Samanta</div>
+          <div class="text-sm text-[#5e5a48]">Balance: ₹45,891</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+        <div class="space-y-6 lg:col-span-1">
+          <div class="section-card">
+            <h2 class="text-md font-semibold mb-3 text-[#504B38]">📊 Stock Quantity</h2>
+            <div class="h-64">
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+          <div class="section-card">
+            <h2 class="text-md font-semibold mb-3 text-[#504B38]">🥧 Investment Split</h2>
+            <div class="h-64">
+              <canvas id="pieChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2">
+          <div class="section-card overflow-x-auto">
+            <table class="min-w-full table-auto text-sm text-left">
+              <thead class="text-[#504B38] text-xs font-semibold uppercase">
+                <tr>
+                  <th class="px-6 py-4">Company</th>
+                  <th class="px-6 py-4">Quantity</th>
+                  <th class="px-6 py-4">Bought Price</th>
+                  <th class="px-6 py-4">Current Price</th>
+                  <th class="px-6 py-4">Profit/Loss</th>
+                  <th class="px-6 py-4">Realised</th>
+                  <th class="px-6 py-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="holdings-table-body">
+                <!-- Rows via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card mt-10">
+        <h2 class="text-md font-semibold mb-3 text-[#504B38]">📉 Profit / Loss Per Company</h2>
+        <div class="h-72">
+          <canvas id="profitChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
+      </div>
+      <div class="flex space-x-6 text-sm text-[#B9B28A]">
+        Auto-refresh every 1 minute
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let barChart, pieChart, profitChart;
+    async function loadHoldings() {
+      try {
+        const res = await fetch("http://localhost:5000/holdings");
+        const data = await res.json();
+
+        const tableBody = document.getElementById("holdings-table-body");
+        tableBody.innerHTML = '';
+
+        const labels = [], quantities = [], investments = [], profits = [];
+
+        data.forEach((h, i) => {
+          const profitColor = h.profit_loss >= 0 ? 'text-green-600' : 'text-red-600';
+          const row = document.createElement("tr");
+          row.className = "hover:bg-[#f1ecce] transition-colors duration-200";
+          row.innerHTML = `
+            <td class="px-6 py-4 text-[#504B38] font-medium">${h.company_name}</td>
+            <td class="px-6 py-4">${h.quantity}</td>
+            <td class="px-6 py-4">₹${h.buy_price}</td>
+            <td class="px-6 py-4">₹${h.current_price}</td>
+            <td class="px-6 py-4 font-semibold ${profitColor}">₹${h.profit_loss}</td>
+            <td class="px-6 py-4">₹${h.realised_price}</td>
+            <td class="px-6 py-4">
+              <button onclick="sellStock(${i})" class="bg-[#504B38] hover:bg-[#333024] text-[#F8F3D9] text-xs font-semibold px-4 py-2 rounded-lg">
+                Sell
+              </button>
+            </td>`;
+          tableBody.appendChild(row);
+
+          labels.push(h.company_name);
+          quantities.push(h.quantity);
+          investments.push(h.quantity * h.buy_price);
+          profits.push(h.profit_loss);
+        });
+        renderCharts(labels, quantities, investments, profits);
+      } catch (err) {
+        console.error("Error loading holdings:", err);
+      }
+    }
+
+    function renderCharts(labels, quantities, investments, profits) {
+      const colors = ['#504B38', '#B9B28A', '#E6DFA6', '#CFC8A6'];
+
+      if (barChart) barChart.destroy();
+      barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{ label: 'Quantity', data: quantities, backgroundColor: colors }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { color: '#504B38' } },
+            x: { ticks: { color: '#504B38' } }
+          }
+        }
+      });
+
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{ label: 'Investment', data: investments, backgroundColor: colors }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#504B38' } } }
+        }
+      });
+
+      if (profitChart) profitChart.destroy();
+      profitChart = new Chart(document.getElementById('profitChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Profit / Loss',
+            data: profits,
+            backgroundColor: profits.map(p => p >= 0 ? '#10b981' : '#ef4444')
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#504B38' }, beginAtZero: true },
+            y: { ticks: { color: '#504B38' } }
+          }
+        }
+      });
+    }
+
+    function sellStock(index) {
+      alert(`Sell stock at row ${index + 1}`);
+    }
+
+    window.onload = loadHoldings;
+    setInterval(() => location.reload(), 60000);
+  </script>
+</body>
+</html>
