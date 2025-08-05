@@ -3,84 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="/favicon.ico">
-  <title>Holdings - Stock Express</title>
+  <title>Dashboard | StockExpress</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-    }
-    .section-card {
-      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
-      border: 1px solid rgba(185,178,138,0.3);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 2rem;
-      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
-    }
-    .navbar-blur {
-      backdrop-filter: blur(20px);
-      background: rgba(185, 178, 138, 0.95);
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
-<body class="bg-[#F8F3D9] text-[#504B38] min-h-screen flex flex-col">
-  <nav class="navbar-blur py-4 px-6 shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="#504B38"/>
-          <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
-          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
-          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
-          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
-        </svg>
-        <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
-      </div>
-      <ul class="flex gap-8 font-semibold text-[#504B38]">
-        <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
-          Home
-          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
-        </a></li>
-        <li><a href="stocks.html" class="hover:text-[#333024] transition-colors duration-300">Stocks</a></li>
-        <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
-      </ul>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gray-900 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="text-2xl font-bold text-cyan-400">StockExpress</div>
+      <nav class="space-x-6 text-gray-300 font-medium text-sm">
+        <a href="#" class="hover:text-cyan-400 transition">Home</a>
+        <a href="stocks.html" class="hover:text-cyan-400 transition">Stocks</a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <main class="flex-1 px-6 py-6 space-y-10">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex items-center space-x-4 bg-[#EDE6C4] border border-[#D6C89B] rounded-xl p-4 shadow">
-        <div class="w-12 h-12 rounded-full bg-[#504B38] flex items-center justify-center text-xl font-bold text-[#F8F3D9]">A</div>
-        <div>
-          <div class="text-lg font-semibold text-[#333024]">Abhishek Samanta</div>
-          <div class="text-sm text-[#5e5a48]">Balance: ₹45,891</div>
-        </div>
+  <!-- Profile -->
+  <section class="max-w-7xl mx-auto px-6 py-4">
+    <div class="flex items-center space-x-4 bg-gray-900 border border-gray-800 rounded-lg p-4 shadow">
+      <div class="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center text-xl font-bold text-gray-900">A</div>
+      <div>
+        <div class="text-lg font-semibold text-white">Abhishek Samanta</div>
+        <div id="userBalance" class="text-sm text-gray-400">Balance: Loading...</div>
       </div>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+  <!-- Tabs -->
+  <section class="max-w-7xl mx-auto px-6">
+    <div class="flex space-x-6 border-b border-gray-800 mb-6">
+      <button id="holdingsTab" class="py-2 px-4 text-cyan-400 border-b-2 border-cyan-400 font-semibold">Holdings</button>
+      <button id="transactionsTab" class="py-2 px-4 text-gray-400 hover:text-cyan-400 transition">Transactions</button>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="flex-1 px-6 pb-16">
+    <!-- Holdings Section -->
+    <div id="holdingsSection" class="max-w-7xl mx-auto space-y-10">
+      <!-- Charts + Holdings Table -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Charts -->
         <div class="space-y-6 lg:col-span-1">
-          <div class="section-card">
-            <h2 class="text-md font-semibold mb-3 text-[#504B38]">📊 Stock Quantity</h2>
-            <div class="h-64">
-              <canvas id="barChart"></canvas>
-            </div>
+          <div class="bg-gray-900 p-4 rounded-lg shadow border border-gray-800">
+            <h2 class="text-md font-semibold mb-3 text-cyan-400">📊 Stock Quantity</h2>
+            <canvas id="barChart" class="h-64"></canvas>
           </div>
-          <div class="section-card">
-            <h2 class="text-md font-semibold mb-3 text-[#504B38]">🥧 Investment Split</h2>
-            <div class="h-64">
-              <canvas id="pieChart"></canvas>
-            </div>
+          <div class="bg-gray-900 p-4 rounded-lg shadow border border-gray-800">
+            <h2 class="text-md font-semibold mb-3 text-cyan-400">🥧 Investment Split</h2>
+            <canvas id="pieChart" class="h-64"></canvas>
           </div>
         </div>
 
+        <!-- Holdings Table -->
         <div class="lg:col-span-2">
-          <div class="section-card overflow-x-auto">
+          <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden">
             <table class="min-w-full table-auto text-sm text-left">
-              <thead class="text-[#504B38] text-xs font-semibold uppercase">
+              <thead class="bg-gray-800 text-cyan-300 uppercase text-xs font-semibold">
                 <tr>
                   <th class="px-6 py-4">Company</th>
                   <th class="px-6 py-4">Quantity</th>
@@ -91,142 +78,220 @@
                   <th class="px-6 py-4">Actions</th>
                 </tr>
               </thead>
-              <tbody id="holdings-table-body">
-                <!-- Rows via JS -->
-              </tbody>
+              <tbody id="holdings-table-body" class="divide-y divide-gray-800"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <div class="section-card mt-10">
-        <h2 class="text-md font-semibold mb-3 text-[#504B38]">📉 Profit / Loss Per Company</h2>
-        <div class="h-72">
-          <canvas id="profitChart"></canvas>
-        </div>
+      <!-- Profit Chart -->
+      <div class="bg-gray-900 p-6 rounded-lg shadow border border-gray-800">
+        <h2 class="text-md font-semibold mb-3 text-cyan-400">📉 Profit / Loss Per Company</h2>
+        <canvas id="profitChart" class="h-72"></canvas>
+      </div>
+    </div>
+
+    <!-- Transactions Section -->
+    <div id="transactionsSection" class="max-w-7xl mx-auto hidden">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <table class="min-w-full table-auto text-sm text-left">
+          <thead class="bg-gray-800 text-cyan-300 uppercase text-xs font-semibold">
+            <tr>
+              <th class="px-6 py-4">Date</th>
+              <th class="px-6 py-4">Company</th>
+              <th class="px-6 py-4">Type</th>
+              <th class="px-6 py-4">Quantity</th>
+              <th class="px-6 py-4">Price</th>
+            </tr>
+          </thead>
+          <tbody id="transactions-table-body" class="divide-y divide-gray-800"></tbody>
+        </table>
       </div>
     </div>
   </main>
 
-  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center space-x-2 mb-4 md:mb-0">
-        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
-          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
-          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
-          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
-          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
-        </svg>
-        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
-      </div>
-      <div class="flex space-x-6 text-sm text-[#B9B28A]">
-        Auto-refresh every 1 minute
-      </div>
-    </div>
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-500 text-sm py-4 text-center border-t border-gray-800">
+    &copy; 2025 StockExpress • Auto-refresh every 1 minute
   </footer>
 
+  <!-- JS Logic -->
   <script>
     let barChart, pieChart, profitChart;
+    const userId = 1;
+    let holdingsData = [];
+  
+    async function loadUserBalance() {
+      const res = await fetch(`http://localhost:5000/users/${userId}`);
+      const data = await res.json();
+      document.getElementById("userBalance").innerText = `Balance: ₹${parseFloat(data.balance).toLocaleString()}`;
+    }
+  
     async function loadHoldings() {
-      try {
-        const res = await fetch("http://localhost:5000/holdings");
-        const data = await res.json();
-
-        const tableBody = document.getElementById("holdings-table-body");
-        tableBody.innerHTML = '';
-
-        const labels = [], quantities = [], investments = [], profits = [];
-
-        data.forEach((h, i) => {
-          const profitColor = h.profit_loss >= 0 ? 'text-green-600' : 'text-red-600';
-          const row = document.createElement("tr");
-          row.className = "hover:bg-[#f1ecce] transition-colors duration-200";
-          row.innerHTML = `
-            <td class="px-6 py-4 text-[#504B38] font-medium">${h.company_name}</td>
+      const res = await fetch("http://localhost:5000/holdings");
+      const data = await res.json();
+      holdingsData = data;
+      const tbody = document.getElementById("holdings-table-body");
+      tbody.innerHTML = '';
+  
+      const labels = [], quantities = [], investments = [], profits = [];
+  
+      data.forEach((h, i) => {
+        const profitColor = h.profit_loss >= 0 ? 'text-green-400' : 'text-red-400';
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 text-cyan-200 font-medium">${h.company_name}</td>
             <td class="px-6 py-4">${h.quantity}</td>
             <td class="px-6 py-4">₹${h.buy_price}</td>
             <td class="px-6 py-4">₹${h.current_price}</td>
             <td class="px-6 py-4 font-semibold ${profitColor}">₹${h.profit_loss}</td>
             <td class="px-6 py-4">₹${h.realised_price}</td>
             <td class="px-6 py-4">
-              <button onclick="sellStock(${i})" class="bg-[#504B38] hover:bg-[#333024] text-[#F8F3D9] text-xs font-semibold px-4 py-2 rounded-lg">
+              <button onclick="sellStock(${i})" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">
                 Sell
               </button>
-            </td>`;
-          tableBody.appendChild(row);
-
-          labels.push(h.company_name);
-          quantities.push(h.quantity);
-          investments.push(h.quantity * h.buy_price);
-          profits.push(h.profit_loss);
+            </td>
+          </tr>
+        `;
+        labels.push(h.company_name);
+        quantities.push(h.quantity);
+        investments.push(h.quantity * h.buy_price);
+        profits.push(h.profit_loss);
+      });
+  
+      renderCharts(labels, quantities, investments, profits);
+    }
+  
+    async function sellStock(index) {
+      const holding = holdingsData[index];
+      const overlay = document.getElementById("loadingOverlay");
+      overlay.classList.remove("hidden"); // Show loading
+    
+      try {
+        const deleteRes = await fetch(`http://localhost:5000/holdings/${holding.u_id}`, {
+          method: 'DELETE'
         });
-        renderCharts(labels, quantities, investments, profits);
+    
+        if (!deleteRes.ok) throw new Error('Failed to delete holding');
+    
+        const updateRes = await fetch(`http://localhost:5000/users/${userId}/`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: holding.realised_price,
+            type: 'sell'
+          })
+        });
+    
+        if (!updateRes.ok) throw new Error('Failed to update user balance');
+    
+        const transactionRes = await fetch('http://localhost:5000/transactions/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            company_name: holding.company_name,
+            transaction_type: 'sell',
+            quantity: holding.quantity
+          })
+        });
+    
+        if (!transactionRes.ok) throw new Error('Failed to add transaction');
+    
+    
+    
+       location.reload(); // Reload with slight delay
+    
       } catch (err) {
-        console.error("Error loading holdings:", err);
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops!',
+          text: err.message || 'An error occurred while selling stock',
+          background: '#1f2937',
+          color: '#fecaca'
+        });
+      } finally {
+        overlay.classList.add("hidden"); // Hide loading
       }
     }
-
+    
+  
+    async function loadTransactions() {
+      const res = await fetch("http://localhost:5000/transactions/");
+      const data = await res.json();
+      const tbody = document.getElementById("transactions-table-body");
+      tbody.innerHTML = '';
+  
+      data.forEach(t => {
+        const typeColor = t.transaction_type === 'buy' ? 'text-green-400' : 'text-red-400';
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4">${new Date(t.transaction_date).toLocaleString()}</td>
+            <td class="px-6 py-4">${t.company_name}</td>
+            <td class="px-6 py-4 font-semibold ${typeColor} uppercase">${t.transaction_type}</td>
+            <td class="px-6 py-4">${t.quantity}</td>
+            <td class="px-6 py-4">₹${(t.amount).toFixed(2)}</td>
+          </tr>
+        `;
+      });
+    }
+  
     function renderCharts(labels, quantities, investments, profits) {
-      const colors = ['#504B38', '#B9B28A', '#E6DFA6', '#CFC8A6'];
-
+      const colors = ['#06b6d4', '#8b5cf6', '#f59e0b', '#10b981', '#ef4444', '#eab308', '#6366f1'];
+  
       if (barChart) barChart.destroy();
       barChart = new Chart(document.getElementById('barChart'), {
         type: 'bar',
-        data: {
-          labels,
-          datasets: [{ label: 'Quantity', data: quantities, backgroundColor: colors }]
-        },
-        options: {
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, ticks: { color: '#504B38' } },
-            x: { ticks: { color: '#504B38' } }
-          }
-        }
+        data: { labels, datasets: [{ label: 'Quantity', data: quantities, backgroundColor: colors }] },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: '#9ca3af' } }, x: { ticks: { color: '#9ca3af' } } } }
       });
-
+  
       if (pieChart) pieChart.destroy();
       pieChart = new Chart(document.getElementById('pieChart'), {
         type: 'pie',
-        data: {
-          labels,
-          datasets: [{ label: 'Investment', data: investments, backgroundColor: colors }]
-        },
-        options: {
-          plugins: { legend: { labels: { color: '#504B38' } } }
-        }
+        data: { labels, datasets: [{ label: 'Investment', data: investments, backgroundColor: colors }] },
+        options: { plugins: { legend: { labels: { color: '#9ca3af' } } } }
       });
-
+  
       if (profitChart) profitChart.destroy();
       profitChart = new Chart(document.getElementById('profitChart'), {
         type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Profit / Loss',
-            data: profits,
-            backgroundColor: profits.map(p => p >= 0 ? '#10b981' : '#ef4444')
-          }]
-        },
+        data: { labels, datasets: [{ label: 'Profit / Loss', data: profits, backgroundColor: profits.map(p => p >= 0 ? '#10b981' : '#ef4444') }] },
         options: {
           indexAxis: 'y',
           plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { color: '#504B38' }, beginAtZero: true },
-            y: { ticks: { color: '#504B38' } }
-          }
+          scales: { x: { beginAtZero: true, ticks: { color: '#9ca3af' } }, y: { ticks: { color: '#9ca3af' } } }
         }
       });
     }
-
-    function sellStock(index) {
-      alert(`Sell stock at row ${index + 1}`);
-    }
-
-    window.onload = loadHoldings;
+  
+    document.getElementById('holdingsTab').onclick = () => {
+      document.getElementById('holdingsSection').classList.remove('hidden');
+      document.getElementById('transactionsSection').classList.add('hidden');
+      document.getElementById('holdingsTab').classList.add('text-cyan-400', 'border-cyan-400');
+      document.getElementById('transactionsTab').classList.remove('text-cyan-400', 'border-cyan-400');
+    };
+  
+    document.getElementById('transactionsTab').onclick = () => {
+      document.getElementById('holdingsSection').classList.add('hidden');
+      document.getElementById('transactionsSection').classList.remove('hidden');
+      document.getElementById('transactionsTab').classList.add('text-cyan-400', 'border-cyan-400');
+      document.getElementById('holdingsTab').classList.remove('text-cyan-400', 'border-cyan-400');
+      loadTransactions();
+    };
+  
+    window.onload = () => {
+      loadUserBalance();
+      loadHoldings();
+    };
+  
     setInterval(() => location.reload(), 60000);
   </script>
+  <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center">
+    <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+  
 </body>
 </html>
