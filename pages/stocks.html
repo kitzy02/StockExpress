@@ -1,50 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Stocks | StockExpress</title>
+  <title>Invest - Stock Express</title>
+  <link rel="icon" href="/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .logo-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .section-card {
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .btn-dashboard {
+      background:  #504B38;
+      color: #F8F3D9;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(80, 75, 56, 0.2);
+    }
+
+    .btn-dashboard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px rgba(80, 75, 56, 0.3);
+    }
+
+    .btn-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-dashboard:hover::before {
+      left: 100%;
+    }
+
+    .navbar-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(185, 178, 138, 0.95);
+    }
+
+    /* Stock Table Themed Styles */
+    .stock-table-container {
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .stock-table-container:hover {
+      transform: translateY(-2px);
+    }
+
+    .stock-table {
+      background: transparent;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .stock-table thead {
+      background: linear-gradient(135deg, #504B38, #3d3829);
+      position: relative;
+    }
+
+    .stock-table thead::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(185,178,138,0.5), transparent);
+    }
+
+    .stock-table th {
+      color: #F8F3D9;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      border: none;
+    }
+
+    .stock-table tbody tr {
+      background: rgba(248,243,217,0.3);
+      border-bottom: 1px solid rgba(185,178,138,0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .stock-table tbody tr:hover {
+      background: rgba(235,229,194,0.6);
+      transform: translateX(5px);
+      box-shadow: inset 4px 0 0 #B9B28A;
+    }
+
+    .stock-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .stock-table td {
+      padding: 1.25rem 1.5rem;
+      color: #504B38;
+      font-weight: 500;
+      border: none;
+      position: relative;
+    }
+
+    .stock-table .company-name {
+      font-weight: 600;
+      color: #333024;
+      font-size: 1rem;
+    }
+
+    .stock-table .price-cell {
+      font-weight: 600;
+      color: #504B38;
+      font-size: 1.1rem;
+    }
+
+    .buy-btn {
+      background: linear-gradient(135deg, #504B38, #3d3829);
+      color: #F8F3D9;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(80, 75, 56, 0.3);
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(80, 75, 56, 0.4);
+      background: linear-gradient(135deg, #5a5442, #484136);
+    }
+
+    .buy-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(248,243,217,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .buy-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Modal Themed Styles */
+    .modal-container {
+      background: linear-gradient(145deg, rgba(248,243,217,0.98), rgba(235,229,194,0.95));
+      border: 1px solid rgba(185,178,138,0.4);
+      backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(80, 75, 56, 0.3);
+    }
+
+    .modal-input {
+      background: rgba(248,243,217,0.8);
+      border: 2px solid rgba(185,178,138,0.3);
+      color: #504B38;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: #B9B28A;
+      background: rgba(248,243,217,0.95);
+      box-shadow: 0 0 0 3px rgba(185,178,138,0.2);
+    }
+
+    .modal-input::placeholder {
+      color: rgba(80, 75, 56, 0.6);
+    }
+
+    .modal-btn-cancel {
+      background: rgba(185,178,138,0.3);
+      color: #504B38;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-btn-cancel:hover {
+      background: rgba(185,178,138,0.5);
+      transform: translateY(-1px);
+    }
+
+    .modal-btn-buy {
+      background: linear-gradient(135deg, #504B38, #3d3829);
+      color: #F8F3D9;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(80, 75, 56, 0.3);
+    }
+
+    .modal-btn-buy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(80, 75, 56, 0.4);
+      background: linear-gradient(135deg, #5a5442, #484136);
+    }
+
+    /* Toast Themed Styles */
+    .toast {
+      background: linear-gradient(135deg, #504B38, #3d3829);
+      color: #F8F3D9;
+      border: 1px solid rgba(185,178,138,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.3);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide-up {
+      animation: slideUp 0.6s ease-out;
+    }
+
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
     }
   </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
 
-  <!-- Header Navbar -->
-  <header class="bg-gray-900 border-b border-gray-800">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="text-2xl font-bold text-cyan-400">StockExpress</div>
-      <nav class="space-x-6 text-gray-300 font-medium text-sm">
-        <a href="holdings.html" class="hover:text-cyan-400 transition">Home</a>
-        <a href="#" class="hover:text-cyan-400 transition">Stocks</a>
+<body class="bg-[#F8F3D9] text-[#504B38] min-h-screen flex flex-col">
+
+    <nav class="navbar-blur py-4 px-6 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <!-- Custom Logo SVG -->
+            <svg class="w-8 h-8 logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="8" fill="#504B38"/>
+              <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+              <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+              <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+              <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+              <path d="M26 12V16M30 12V16" stroke="#F8F3D9" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
+          </div>
+          <ul class="flex gap-8 font-semibold text-[#504B38]">
+            <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
+              Home
+              <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
+            </a></li>
+            <li><a href="holdings.html" class="hover:text-[#333024] transition-colors duration-300">Holdings</a></li>
+            <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+          </ul>
+        </div>
       </nav>
-    </div>
-  </header>
 
   <!-- Main Section -->
   <main class="flex-1 px-6 py-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-6">
-        <h1 class="text-3xl font-bold text-cyan-300">📊 Stocks</h1>
-        <p id="lastUpdated" class="text-sm text-gray-400 mt-1">Loading...</p>
+    <div class="text-center mb-8 slide-up">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#333024] mb-4 leading-tight flex items-center justify-center gap-3">
+          <svg class="w-12 h-12 text-[#504B38] float-animation" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="currentColor"/>
+            <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+            <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+            <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+            <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+            <path d="M26 12V16M30 12V16" stroke="#F8F3D9" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span class="text-[#504B38]">Stocks Dashboard</span>
+        </h1>
+      
+        <p id="lastUpdated" class="text-sm text-[#5e5a48] font-medium flex items-center justify-center gap-2">
+          <span id="refreshIcon" class="animate-spin hidden text-[#B9B28A]">⟳</span>
+          <span>Loading stock data...</span>
+        </p>
       </div>
 
-      <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden">
-        <table class="min-w-full table-auto text-sm text-left">
-          <thead class="bg-gray-800 text-cyan-300 uppercase text-xs font-semibold">
+      <div class="stock-table-container">
+        <table class="stock-table">
+          <thead>
             <tr>
-              <th class="px-6 py-4">Company</th>
-              <th class="px-6 py-4">Price</th>
-              <th class="px-6 py-4">52W High</th>
-              <th class="px-6 py-4">52W Low</th>
-              <th class="px-6 py-4">Action</th>
+              <th>Company</th>
+              <th>Price</th>
+              <th>52W High</th>
+              <th>52W Low</th>
+              <th>Action</th>
             </tr>
           </thead>
-          <tbody id="stockTableBody" class="divide-y divide-gray-800"></tbody>
+          <tbody id="stockTableBody"></tbody>
         </table>
       </div>
     </div>
@@ -52,28 +363,40 @@
 
   <!-- Buy Modal -->
   <div class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50" id="buyModal">
-    <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-lg">
-      <h3 id="modalCompany" class="text-xl font-semibold text-cyan-300 mb-2">Company</h3>
-      <p class="mb-4 text-gray-400">Price: ₹<span id="modalPrice">0</span></p>
+    <div class="modal-container p-6 w-full max-w-md">
+      <h3 id="modalCompany" class="text-xl font-semibold text-[#333024] mb-2">Company</h3>
+      <p class="mb-4 text-[#5e5a48] font-medium">Price: ₹<span id="modalPrice">0</span></p>
       <input id="quantity" type="number" min="1" placeholder="Enter quantity"
-             class="w-full mb-4 p-2 rounded-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring focus:ring-cyan-500" />
+             class="modal-input w-full mb-4" />
       <div class="flex justify-end space-x-4">
-        <button onclick="closeModal()"
-                class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-sm text-white">Cancel</button>
-        <button onclick="buyStock()"
-                class="px-4 py-2 rounded-md bg-cyan-500 hover:bg-cyan-600 text-sm font-semibold text-gray-900">Buy</button>
+        <button onclick="closeModal()" class="modal-btn-cancel">Cancel</button>
+        <button onclick="buyStock()" class="modal-btn-buy">Buy</button>
       </div>
     </div>
   </div>
 
   <!-- Toast -->
-  <div id="buyToast" class="fixed bottom-6 right-6 bg-gray-800 text-cyan-300 px-4 py-2 rounded-md shadow-lg hidden">
+  <div id="buyToast" class="fixed bottom-6 right-6 toast px-4 py-2 rounded-md shadow-lg hidden">
     Purchase confirmed
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-500 text-sm py-4 text-center border-t border-gray-800">
-    &copy; 2025 StockExpress • Auto-refresh every 10 seconds
+  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
+      </div>
+      <div class="flex space-x-6 text-sm text-[#B9B28A]">
+        Auto-refresh every 1 minute
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -89,16 +412,14 @@
 
         stocks.forEach(stock => {
           const row = document.createElement('tr');
-          row.className = 'hover:bg-gray-800 transition-colors duration-200';
 
           row.innerHTML = `
-            <td class="px-6 py-4 text-cyan-200 font-medium">${stock.company_name}</td>
-            <td class="px-6 py-4">₹${stock.price}</td>
-            <td class="px-6 py-4">₹${stock.week_52_high}</td>
-            <td class="px-6 py-4">₹${stock.week_52_low}</td>
-            <td class="px-6 py-4">
-              <button class="px-4 py-1 text-sm font-semibold rounded-md bg-cyan-500 hover:bg-cyan-600 text-gray-900"
-                      onclick='openBuyModal(${JSON.stringify(stock)})'>Buy</button>
+            <td class="company-name">${stock.company_name}</td>
+            <td class="price-cell">₹${stock.price}</td>
+            <td>₹${stock.week_52_high}</td>
+            <td>₹${stock.week_52_low}</td>
+            <td>
+              <button class="buy-btn" onclick='openBuyModal(${JSON.stringify(stock)})'>Buy</button>
             </td>
           `;
           tbody.appendChild(row);
