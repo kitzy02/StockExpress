@@ -4,7 +4,6 @@ const stocksRoutes = require('./routes/stock.route');
 const holdingsRoutes = require('./routes/holdings.route.js');
 const current_price=require('./config/currentPriceUpdater.js')
 const transactionRoutes = require('./routes/transaction.route.js');
-const watchlistRoutes = require('./routes/watchlist.route.js');
 const Groq = require('groq-sdk');const app = express();
 const cors = require('cors');
 const port = 5000;
@@ -26,8 +25,6 @@ app.use('/transactions', transactionRoutes);
 
 const userRoutes = require('./routes/user.route.js');
 app.use('/users', userRoutes);
-app.use('/watchlist', watchlistRoutes);
-
 
 const groq = new Groq({ apiKey: "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" });
 
