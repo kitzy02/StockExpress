@@ -13,14 +13,25 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-status-monitor": "^1.3.4",
-    "groq": "^4.2.0",
+    "groq": "^4.3.0",
     "groq-sdk": "^0.29.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.14.3",
-    "nodemon": "^3.1.10"
+    "mysql2": "^3.14.3"
   },
   "devDependencies": {
     "jest": "^30.0.5",
+    "nodemon": "^3.1.10",
     "supertest": "^7.1.4"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kitzy02/StockExpress.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kitzy02/StockExpress/issues"
+  },
+  "homepage": "https://github.com/kitzy02/StockExpress#readme"
 }
