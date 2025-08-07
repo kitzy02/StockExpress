@@ -4,6 +4,7 @@ const stocksRoutes = require('./routes/stock.route');
 const holdingsRoutes = require('./routes/holdings.route.js');
 const current_price=require('./config/currentPriceUpdater.js')
 const transactionRoutes = require('./routes/transaction.route.js');
+const watchlistRoutes = require('./routes/watchlist.route.js');
 
 const Groq = require('groq-sdk');const app = express();
 const cors = require('cors');
@@ -24,11 +25,13 @@ app.use('/holdings', holdingsRoutes);
 
 app.use('/transactions', transactionRoutes);
 
+app.use('/watchlist',watchlistRoutes );
+
 const userRoutes = require('./routes/user.route.js');
 app.use('/users', userRoutes);
 
 const groq = new Groq({ apiKey: "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" });
-
+app.use(require('express-status-monitor')())
 app.post('/chat', async (req, res) => {
   const userInput = req.body.message;
 
@@ -40,7 +43,7 @@ app.post('/chat', async (req, res) => {
         {
           role: "system",
           content:
-            "dont respond to queries other than finance. just say : i can help you with finance related queries"
+            "ONLY ANSWER FINANCIAL QUESTIONS. SAY : IM NOT ALLOWED TO ANSWER OTHER QUESTIONS." 
          }, {
           role: "user",
           content: userInput

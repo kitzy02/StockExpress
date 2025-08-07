@@ -2,64 +2,173 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Finance Chatbot</title>
+  <title>Stock Express</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
+      font-family: 'Poppins', sans-serif;
+      background-color: #F8F3D9;
+      color: #504B38;
     }
-    #chatbox {
-      width: 600px;
-      max-height: 500px;
-      overflow-y: auto;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+
+    .chat-container {
+      max-width: 700px;
+      margin: 4rem auto;
+      background: linear-gradient(145deg, rgba(248,243,217,0.95), rgba(235,229,194,0.9));
+      border: 1px solid rgba(185,178,138,0.3);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(80, 75, 56, 0.1);
     }
-    .msg { margin: 10px 0; }
-    .user { color: #38bdf8; }
-    .bot { color: #4ade80; }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
+
+    .chat-message {
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      max-width: 80%;
     }
-    input {
-      width: 400px;
-      border: none;
+
+    .user-msg {
+      background-color: #504B38;
+      color: #F8F3D9;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
     }
-    button {
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      margin-left: 10px;
-      cursor: pointer;
+
+    .bot-msg {
+      background-color: #B9B28A;
+      color: #333024;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
     }
-    button:hover {
-      background-color: #1d4ed8;
+
+    .btn-send {
+      background: #504B38;
+      color: #F8F3D9;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(80, 75, 56, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-send:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px rgba(80, 75, 56, 0.3);
+    }
+
+    .btn-send::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-send:hover::before {
+      left: 100%;
+    }
+
+    .input-style {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid #B9B28A;
+      font-size: 1rem;
+      color: #504B38;
+      background-color: #fff;
+      outline: none;
+    }
+
+    .logo-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
   </style>
 </head>
-<body>
-  <h1>📈 Finance Chatbot</h1>
-  <div id="chatbox"></div>
-  <div>
-    <input type="text" id="userInput" placeholder="Ask a finance question..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
+<body class="min-h-screen flex flex-col">
 
+  <!-- Header -->
+  <header class="navbar-blur py-6 px-6 shadow-md bg-[#F8F3D9] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <svg class="w-8 h-8 logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#504B38"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#F8F3D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+          
+        </svg>
+        <h1 class="text-2xl font-bold text-[#504B38]">StockExpress</h1>
+    </div>
+    <ul class="flex gap-8 font-semibold text-[#504B38]">
+      <li><a href="stocks.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Stocks</a></li>
+      <li><a href="watchlist.html"class="hover:text-[#333024] transition-colors duration-300 relative group">Watchlist</a></li>
+      <li><a href="holdings.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Holdings</a></li>
+      <li><a href="chat.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Learn More</a></li>
+      <li><a href="login.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+   
+    </ul>
+  </div>
+      </div>
+      
+    </div>
+  </header>
+
+  <!-- Chatbot Container -->
+  <main class="flex-grow">
+    <div class="chat-container flex flex-col" id="chatbox"></div>
+
+    <div class="max-w-3xl mx-auto mt-4 flex gap-4 px-4">
+      <input id="userInput" class="input-style" type="text" placeholder="Ask a finance question...">
+      <button class="btn-send" onclick="sendMessage()">Send</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#504B38] text-[#F8F3D9] py-6 px-6 mt-16">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <svg class="w-5 h-5" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#F8F3D9"/>
+          <path d="M12 24L16 20L20 22L28 14" stroke="#504B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="14" r="2" fill="#B9B28A"/>
+          <circle cx="20" cy="22" r="2" fill="#B9B28A"/>
+          <circle cx="16" cy="20" r="2" fill="#B9B28A"/>
+          <circle cx="12" cy="24" r="2" fill="#B9B28A"/>
+        </svg>
+        <span class="font-semibold">© 2025 Stock Express. All rights reserved.</span>
+      </div>
+      <div class="flex space-x-6 text-sm text-[#B9B28A]">
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-[#F8F3D9] transition-colors">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
   <script>
     const chatbox = document.getElementById('chatbox');
 
     function appendMessage(sender, text) {
       const msg = document.createElement('div');
-      msg.className = 'msg ' + sender;
+      msg.className = 'chat-message ' + (sender === 'user' ? 'user-msg self-end' : 'bot-msg self-start');
       msg.textContent = (sender === 'user' ? 'You: ' : 'Bot: ') + text;
       chatbox.appendChild(msg);
       chatbox.scrollTop = chatbox.scrollHeight;
@@ -73,16 +182,23 @@
       appendMessage('user', message);
       input.value = '';
 
-      const res = await fetch('http://localhost:5000/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
+      try {
+        const res = await fetch('http://localhost:5000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
 
-      const data = await res.json();
-    console.log(data);
-      appendMessage('bot', data.response);
+        const data = await res.json();
+        appendMessage('bot', data.reply || 'Sorry, I could not process your request.');
+      } catch (err) {
+        appendMessage('bot', 'Sorry, something went wrong.');
+      }
     }
   </script>
 </body>
 </html>
+
+
+
+<!-- appendMessage('bot', data.reply || 'Sorry, I could not process your request.');  -->

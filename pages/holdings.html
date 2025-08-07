@@ -267,6 +267,16 @@
       height: 3rem;
       animation: spin 1s linear infinite;
     }
+    .color-buy {
+      color: #C0392B; /* Red for BUY */
+      font-weight: 600;
+    }
+    
+    .color-sell {
+      color: #27AE60; /* Green for SELL */
+      font-weight: 600;
+    }
+    
 
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -313,13 +323,12 @@
         <h1 class="text-2xl font-bold text-[#504B38]">Stock Express</h1>
       </div>
       <ul class="flex gap-8 font-semibold text-[#504B38]">
-        <li><a href="index.html" class="hover:text-[#333024] transition-colors duration-300 relative group">
-          Home
-          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#333024] transition-all duration-300 group-hover:w-full"></span>
-        </a></li>
-        <li><a href="stocks.html" class="hover:text-[#333024] transition-colors duration-300">Stocks</a></li>
-        <li><a href="index.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
-      </ul>
+        <li><a href="stocks.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Stocks</a></li>
+        <li><a href="watchlist.html"class="hover:text-[#333024] transition-colors duration-300 relative group">Watchlist</a></li>
+        <li><a href="holdings.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Holdings</a></li>
+        <li><a href="chat.html" class="hover:text-[#333024] transition-colors duration-300 relative group">Learn More</a></li>
+        <li><a href="login.html" class="bg-[#504B38] text-[#F8F3D9] px-4 py-2 rounded-lg hover:bg-[#333024] transition-colors duration-300">Log Out</a></li>
+       </ul>
     </div>
   </nav>
 
@@ -534,7 +543,7 @@
       tbody.innerHTML = '';
   
       data.forEach(t => {
-        const typeColor = t.transaction_type === 'buy' ? 'transaction-buy' : 'transaction-sell';
+        const typeColor = t.transaction_type === 'sell' ? 'color-sell' : 'color-buy';
         tbody.innerHTML += `
           <tr>
             <td>${new Date(t.transaction_date).toLocaleString()}</td>

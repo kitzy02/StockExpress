@@ -2,6 +2,8 @@ const db = require('../config/db');
 
 // Add stock to watchlist
 exports.addToWatchlist = (req, res) => {
+  // console.log('api hit');
+  
   const { stock_id } = req.body;
   if (!stock_id) {
     return res.status(400).json({ error: 'stock_id is required' });
