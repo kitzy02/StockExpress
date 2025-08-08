@@ -1,4 +1,4 @@
-# 📊 Stock Portfolio Management Website
+# 📊 StockExpress
 
 This is a simple and interactive stock portfolio management web application. It allows users to buy and sell stocks, view their holdings, track transactions, add stocks to a watchlist, and ask financial questions through an AI chatbot named FINN.
 
